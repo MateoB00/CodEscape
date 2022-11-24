@@ -19,7 +19,6 @@
         <option value="fontSize">font-size</option>
         <option value="paddingLeft">padding-left</option>
         <option value="backgroundColor">background-color</option>
-        <option value="marginRight">margin-right</option>
         <option value="paddingRight">padding-right</option>
         <option value="marginLeft">margin-left</option>
       </select>
@@ -31,12 +30,12 @@
     <div class="displayDiv rounded text-center mx-3 my-3" id="displayDiv">
     </div>
     <div class="keyDiv">
-      <img id="key" class="key" src="./Cle.png" alt="lock">
+      <img id="key" class="key" src="./Cle.png" alt="lock" style="border:5px solid red">
     </div>
     <div class="lockDiv">
       <img class="lock" src="./nouveau_lock.png" alt="lock">
       <img class="lock2" src="./nouveau_lock2.png" alt="lock">
-      <div class="emptyDiv" id="emptyDiv"></div>
+      <div class="emptyDiv" id="emptyDiv" style="border:5px solid blue"></div>
     </div>
 
     <canvas id="canvas">Canvas is not supported in your browser.</canvas>
@@ -219,10 +218,6 @@
           keyId.style.backgroundColor = fieldValue
           break;
 
-        case "marginRight":
-          keyId.style.marginRight = fieldValue
-          break;
-
         case "paddingRight":
           keyId.style.paddingRight = fieldValue
           break;
@@ -249,9 +244,9 @@
       displayDiv.innerHTML = innerHtml;
 
 
-
-      if (window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 > window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left
-        && window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 < window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().right) {
+      if (window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 200 > window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left
+        && window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 75 < window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().right
+      ) {
         main.classList.toggle('active');
         main.style.opacity = 0;
 
@@ -274,6 +269,16 @@
         displayDiv.style.display = 'none'
       }
     })
+
+    function printMousePos(event) {
+      console.log(
+        "clientX: " + event.clientX +
+        " - clientY: " + event.clientY);
+      console.log(keyId.getBoundingClientRect().top, ' : ', document.querySelector('.emptyDiv').getBoundingClientRect().top, ' : ', (window.innerWidth / 2 + 100), ' : ', window.innerHeight / 2, ' : ', (window.innerWidth / 2))
+
+    }
+
+    document.addEventListener("click", printMousePos);
 
 
 
