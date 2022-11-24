@@ -1,156 +1,192 @@
 <html>
-  <head>
-        <title>HTML5 Canvas Matrix Effect</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">    
-  </head>
-  <body>
-    <style>
 
-body {
-    margin: 0;
-}
+<head>
+  <title>Last Step - Cod'Escape</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
 
-canvas {
-    display: block;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index: -1;
-}
-h1 {
-    text-align: center;
-    color: white;
-    opacity: 75%;
-}
-.keyDiv{
-    z-index: 3;
-}
+<body>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
 
-.lock {
-    height: 750px;
-    width: 750px;
-    position: absolute;
-    top: 50%;
-    left: calc(50% - 375px);
-    top: calc(50% - 375px);
-    z-index: 1;
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
 
-}
-.key {
-  /*
-  Réponse :    
-    height: 120px;
-    width: 120px;
-    margin-right: 300px;
-    margin-top: 100px;
-    margin-left: 260px;
-  Initial :
-     width: 120px;
-    margin-right: 300px;
-    margin-top: 100px;
-  */
-  position: absolute;
-  height: 120px;
-    width: 120px;
-    margin-right: 0px;
-    margin-top: 100px;
-}
+    .lock {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .lock2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+    }
+
+    .keyDiv {
+      display: flex;
+      justify-content: center;
+    }
+
+    .main {
+      opacity: 1;
+      -webkit-transition: opacity 1s 0s ease;
+      -moz-transition: opacity 1s 0s ease;
+      -o-transition: opacity 1s 0s ease;
+      transition: opacity 3s 0s ease;
+    }
+
+    .main:active {
+      opacity: 0;
+      transition: opacity 3s 0s ease;
+    }
+
+    .key {
+      /*.key {
+        height: 520px;
+        width: 550px;
+        margin-top: 40vh;
+        margin-right: 8vh;
+        z-index: 3;
+      }*/
+      height: 520px;
+      width: 550px;
+      margin-top: 40vh;
+      margin-right: 50vh;
+      z-index: 3;
+    }
+
+    .emptyDiv {
+      position: absolute;
+      top: 62%;
+      left: 65%;
+      transform: translate(-68%, -55%);
+      z-index: 5;
+      height: 6vh;
+      width: 15vh;
+    }
+
+    .inputDiv {
+      text-align: center;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+    }
+
+    .input {
+      width: 450px;
+    }
+  </style>
+  <div class="main" id="main" onload="onload();">
+    <div class=" inputDiv">
+      <select name="selectStyle" id="selectStyle">
+        <option value="color">color</option>
+        <option value="fontSize">font-size</option>
+        <option value="paddingLeft">padding-left</option>
+        <option value="backgroundColor">background-color</option>
+        <option value="marginRight">margin-right</option>
+        <option value="paddingRight">padding-right</option>
+        <option value="marginLeft">margin-left</option>
+      </select>
+      <input class="input" type="text" name="input" value="" id="input">
+      <input type="button" value="Send" onclick="getFieldValueAndSetCssOnTheKey();">
+    </div>
+    <div class="keyDiv">
+      <img id="key" class="key" src="./Cle.png" alt="lock">
+    </div>
+    <div class="lockDiv">
+      <img class="lock" src="./nouveau_lock.png" alt="lock">
+      <img class="lock2" src="./nouveau_lock2.png" alt="lock">
+      <div class="emptyDiv" id="emptyDiv" style="border:5px solid blue"></div>
+    </div>
+
+  </div>
+  <canvas id="canvas">Canvas is not supported in your browser.</canvas>
+  <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
 
 
-.lock2 {
-    height: 750px;
-    width: 750px;
-    position: absolute;
-    top: 50%;
-    left: calc(50% - 375px);
-    top: calc(50% - 375px);
-    z-index: 4;
-}
 
-    </style>
-        
-<div class="keyDiv">
-        <img class="key" src="./Cle.png" alt="lock">
-</div>
-<div class="lockDiv">
-    <img class="lock" src="./nouveau_lock.png" alt="lock">
-    <img class="lock2" src="./nouveau_lock2.png" alt="lock">
-</div>
-<div class="inputClass" id="inputId">
-    <input type="text" name="input" id="input" class="input" placeholder="Donne la bonne réponse chacal">
-</div>
-    <canvas id="canvas">Canvas is not supported in your browser.</canvas>
-    <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
+  <script>
+    var canvas = document.getElementById('canvas'),
+      ctx = canvas.getContext('2d'),
+      canvas2 = document.getElementById('canvas2'),
 
-
-
-    <script>
-    var canvas = document.getElementById( 'canvas' ),
-		ctx = canvas.getContext( '2d' ),
-    canvas2 = document.getElementById( 'canvas2' ),
-
-    ctx2 = canvas2.getContext( '2d' ),
-		// full screen dimensions
-		cw = window.innerWidth,
-		ch = window.innerHeight,
-    charArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
-    maxCharCount = 100,
-    fallingCharArr = [],
-    fontSize = 10,
-    maxColums = cw/(fontSize);
+      ctx2 = canvas2.getContext('2d'),
+      // full screen dimensions
+      cw = window.innerWidth,
+      ch = window.innerHeight,
+      charArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+      maxCharCount = 100,
+      fallingCharArr = [],
+      fontSize = 10,
+      maxColums = cw / (fontSize);
     canvas.width = canvas2.width = cw;
     canvas.height = canvas2.height = ch;
 
 
-    function randomInt( min, max ) {
-    	return Math.floor(Math.random() * ( max - min ) + min);
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
     }
 
-    function randomFloat( min, max ) {
-    	return Math.random() * ( max - min ) + min;
+    function randomFloat(min, max) {
+      return Math.random() * (max - min) + min;
     }
 
-    function Point(x,y)
-    {
+    function Point(x, y) {
       this.x = x;
       this.y = y;
     }
 
-    Point.prototype.draw = function(ctx){
+    Point.prototype.draw = function (ctx) {
 
-      this.value = charArr[randomInt(0,charArr.length-1)].toUpperCase();
-      this.speed = randomFloat(1,5);
+      this.value = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
+      this.speed = randomFloat(1, 5);
 
 
       ctx2.fillStyle = "rgba(255,255,255,0.8)";
-      ctx2.font = fontSize+"px san-serif";
-      ctx2.fillText(this.value,this.x,this.y);
+      ctx2.font = fontSize + "px san-serif";
+      ctx2.fillText(this.value, this.x, this.y);
 
-        ctx.fillStyle = "#0F0";
-        ctx.font = fontSize+"px san-serif";
-        ctx.fillText(this.value,this.x,this.y);
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px san-serif";
+      ctx.fillText(this.value, this.x, this.y);
 
 
 
-        this.y += this.speed;
-        if(this.y > ch)
-        {
-          this.y = randomFloat(-100,0);
-          this.speed = randomFloat(2,5);
-        }
+      this.y += this.speed;
+      if (this.y > ch) {
+        this.y = randomFloat(-100, 0);
+        this.speed = randomFloat(2, 5);
+      }
     }
 
-    for(var i = 0; i < maxColums ; i++) {
-      fallingCharArr.push(new Point(i*fontSize,randomFloat(-500,0)));
+    for (var i = 0; i < maxColums; i++) {
+      fallingCharArr.push(new Point(i * fontSize, randomFloat(-500, 0)));
     }
 
-    var update = function()
-    {
+    var update = function () {
 
-    ctx.fillStyle = "rgba(0,0,0,0.05)";
-    ctx.fillRect(0,0,cw,ch);
+      ctx.fillStyle = "rgba(0,0,0,0.05)";
+      ctx.fillRect(0, 0, cw, ch);
 
-    ctx2.clearRect(0,0,cw,ch);
+      ctx2.clearRect(0, 0, cw, ch);
 
       var i = fallingCharArr.length;
 
@@ -162,16 +198,75 @@ h1 {
       requestAnimationFrame(update);
     }
 
-  update();
-  
-
-
-    let input = document.getElementById('inputId');
+    update();
 
 
 
-  
+
+    let keyPos = document.getElementById('key').getBoundingClientRect()
+    let emptyDivPos = document.getElementById('emptyDiv').getBoundingClientRect()
+    let key = document.querySelector('.key')
+    let keyId = document.getElementById('key')
+    let main = document.querySelector('.main')
+
+    let pos;
+
+    let array = []
+    function getFieldValueAndSetCssOnTheKey() {
+      let fieldValue = document.getElementById("input").value;
+      let selectValue = document.getElementById('selectStyle').value;
+
+
+      switch (selectValue) {
+        case "color":
+          keyId.style.color = fieldValue
+          break;
+
+        case "fontSize":
+          keyId.style.fontSize = fieldValue
+          break;
+
+        case "paddingLeft":
+          keyId.style.paddingLeft = fieldValue
+          break;
+
+        case "backgroundColor":
+          keyId.style.backgroundColor = fieldValue
+          break;
+
+        case "marginRight":
+          keyId.style.marginRight = fieldValue
+          break;
+
+        case "paddingRight":
+          keyId.style.paddingRight = fieldValue
+          break;
+
+        case "marginLeft":
+          keyId.style.marginLeft = fieldValue
+          break;
+      }
+
+
+
+      if (window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 > window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left
+        && window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 < window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().right) {
+        main.classList.toggle('active');
+        console.log('vocxsjfv')
+        main.style.opacity = 0;
+      }
+
+      console.log(keyId.style.width)
+      array.push(fieldValue)
+
+    }
+
+    console.log(window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40, window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left)
+
+
+
 
   </script>
 </body>
+
 </html>
