@@ -2,101 +2,19 @@
 
 <head>
   <title>Last Step - Cod'Escape</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/all.min.css">
 </head>
 
 <body>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
 
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    .lock {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-    }
-
-    .lock2 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 4;
-    }
-
-    .keyDiv {
-      display: flex;
-      justify-content: center;
-    }
-
-    .main {
-      opacity: 1;
-      -webkit-transition: opacity 1s 0s ease;
-      -moz-transition: opacity 1s 0s ease;
-      -o-transition: opacity 1s 0s ease;
-      transition: opacity 3s 0s ease;
-    }
-
-    .main:active {
-      opacity: 0;
-      transition: opacity 3s 0s ease;
-    }
-
-    .key {
-      /*.key {
-        height: 520px;
-        width: 550px;
-        margin-top: 40vh;
-        margin-right: 8vh;
-        z-index: 3;
-      }*/
-      height: 520px;
-      width: 550px;
-      margin-top: 40vh;
-      margin-right: 50vh;
-      z-index: 3;
-    }
-
-    .emptyDiv {
-      position: absolute;
-      top: 62%;
-      left: 65%;
-      transform: translate(-68%, -55%);
-      z-index: 5;
-      height: 6vh;
-      width: 15vh;
-    }
-
-    .inputDiv {
-      text-align: center;
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 6;
-    }
-
-    .input {
-      width: 450px;
-    }
-  </style>
   <div class="main" id="main" onload="onload();">
-    <div class=" inputDiv">
-      <select name="selectStyle" id="selectStyle">
+    <div class="inputDiv">
+      <select name="selectStyle" id="selectStyle" class="form-control">
+        <option value="">Make the right choice</option>
         <option value="color">color</option>
         <option value="fontSize">font-size</option>
         <option value="paddingLeft">padding-left</option>
@@ -105,8 +23,12 @@
         <option value="paddingRight">padding-right</option>
         <option value="marginLeft">margin-left</option>
       </select>
-      <input class="input" type="text" name="input" value="" id="input">
-      <input type="button" value="Send" onclick="getFieldValueAndSetCssOnTheKey();">
+      <input class="input my-3 form-control" type="text" name="input" value="" id="input"
+        placeholder="The value of your choice">
+      <input type="button" value="Send" class="form-control w-50" onclick="getFieldValueAndSetCssOnTheKey();">
+      <img style="cursor:pointer" id="led" class="led" src="./led.png" height="35px" width="35px">
+    </div>
+    <div class="displayDiv rounded text-center mx-3 my-3" id="displayDiv">
     </div>
     <div class="keyDiv">
       <img id="key" class="key" src="./Cle.png" alt="lock">
@@ -114,12 +36,74 @@
     <div class="lockDiv">
       <img class="lock" src="./nouveau_lock.png" alt="lock">
       <img class="lock2" src="./nouveau_lock2.png" alt="lock">
-      <div class="emptyDiv" id="emptyDiv" style="border:5px solid blue"></div>
+      <div class="emptyDiv" id="emptyDiv"></div>
     </div>
 
+    <canvas id="canvas">Canvas is not supported in your browser.</canvas>
+    <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
   </div>
-  <canvas id="canvas">Canvas is not supported in your browser.</canvas>
-  <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
+
+  <div id="endGame" class="endGame">
+    <div class="container">
+      <div class="wrapper">
+        <div class="top">
+          <span>Neo</span>
+          <label>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-half"></i>
+          </label>
+        </div>
+
+        <div class="time">
+          <i class="fas fa-lock-open"></i>
+          <h1>9:41</h1><span>Friday, September 13</span>
+        </div>
+
+        <div class="noti-title">
+          <h3>Notification Center</h3>
+          <i class="fas fa-times"></i>
+        </div>
+
+        <div class="notification">
+          <div class="noti-top">
+            <label>
+              <span><i class="fa-solid fa-shield-halved"></i>Matrix</span>
+              <span>11:52 AM</span>
+            </label>
+            <h4>CONGRATULATIONS YOU ARE OUT !!</h4>
+            <p>Tu nous as battu bg bien joué</p>
+          </div>
+
+          <div class="noti-bottom">
+            <p>quidem aperiam voluptatum culpa nesciunt</p>
+            <button>Keep...</button><button>Turn off...</button>
+          </div>
+        </div>
+
+        <div class="notification">
+          <div class="noti-top">
+            <label>
+              <span><i class="fab fa-app-store"></i>Cod'Escape</span>
+              <span>11:52 AM</span>
+            </label>
+          </div>
+
+          <div class="noti-bottom">
+            <h4>We are coming soon to your platforms</h4>
+            <p>Unde vel, delectus exercitationem eius quia quae aliquam. Voluptatum </p>
+          </div>
+        </div>
+
+        <div class="light-camera">
+          <i class="fas fa-lightbulb"></i>
+          <i class="fas fa-camera"></i>
+        </div>
+
+        <span class="home-button"></span>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -208,10 +192,11 @@
     let key = document.querySelector('.key')
     let keyId = document.getElementById('key')
     let main = document.querySelector('.main')
+    let displayDiv = document.getElementById('displayDiv')
+    let iphone = document.getElementById('endGame')
 
-    let pos;
 
-    let array = []
+    let arrayOfChoices = []
     function getFieldValueAndSetCssOnTheKey() {
       let fieldValue = document.getElementById("input").value;
       let selectValue = document.getElementById('selectStyle').value;
@@ -247,21 +232,48 @@
           break;
       }
 
+      arrayOfChoices.push(`${selectValue}: ${fieldValue}`)
+
+      let innerHtml = '<ul style="list-style:none">';
+
+
+      for (let i = 0; i < arrayOfChoices.length; i++) {
+        let item = arrayOfChoices[i]
+        innerHtml += '<li style="text-decoration:none">'
+        innerHtml += `<h3 id='lol' style=color:#00a200>${arrayOfChoices[i]}</h3>`
+        innerHtml += '</li>'
+      }
+
+      innerHtml += '</ul>'
+
+      displayDiv.innerHTML = innerHtml;
+
 
 
       if (window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 > window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left
         && window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40 < window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().right) {
         main.classList.toggle('active');
-        console.log('vocxsjfv')
         main.style.opacity = 0;
+
+        setTimeout(function () {
+          main.style.display = 'none'
+          let sheets = document.getElementsByTagName('link')
+          sheets[0].href = 'css/styleEnd.css'
+
+          iphone.style.display = "block"
+          iphone.style.opacity = 1;
+        }, 2500)
       }
-
-      console.log(keyId.style.width)
-      array.push(fieldValue)
-
     }
 
-    console.log(window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 40, window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left)
+    let led = document.getElementById('led')
+    led.addEventListener('click', function () {
+      if (displayDiv.style.display === 'none') {
+        displayDiv.style.display = 'block'
+      } else {
+        displayDiv.style.display = 'none'
+      }
+    })
 
 
 
