@@ -21,6 +21,7 @@
         <option value="backgroundColor">background-color</option>
         <option value="paddingRight">padding-right</option>
         <option value="marginLeft">margin-left</option>
+        <option value="marginTop">margin-top</option>
       </select>
       <input class="input my-3 form-control" type="text" name="input" value="" id="input"
         placeholder="The value of your choice">
@@ -71,11 +72,13 @@
               <span>11:52 AM</span>
             </label>
             <h4>CONGRATULATIONS YOU ARE OUT !!</h4>
-            <p>Tu nous as battu bg bien joué</p>
+            <p>wow well done bro you did beat us</p>
           </div>
 
           <div class="noti-bottom">
-            <p>quidem aperiam voluptatum culpa nesciunt</p>
+            <p>
+              wow well done bro you did beat usthe matrix is impressed. well done y'all
+              </p>
             <button>Keep...</button><button>Turn off...</button>
           </div>
         </div>
@@ -225,6 +228,10 @@
         case "marginLeft":
           keyId.style.marginLeft = fieldValue
           break;
+
+        case "marginTop":
+          keyId.style.marginTop = fieldValue
+          break;
       }
 
       arrayOfChoices.push(`${selectValue}: ${fieldValue}`)
@@ -243,10 +250,18 @@
 
       displayDiv.innerHTML = innerHtml;
 
+      bottomOfKey = window.scrollY + document.querySelector('.key').getBoundingClientRect().bottom
+      bottomOfEmptyDiv = window.scrollY + document.querySelector('.emptyDiv').getBoundingClientRect().bottom
+      
+      topOfKey  = window.scrollY + document.querySelector('.key').getBoundingClientRect().top
+      topOfEmptyDiv = window.scrollY + document.querySelector('.emptyDiv').getBoundingClientRect().top
+
 
       if (window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 200 > window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().left
         && window.scrollX + document.querySelector('.key').getBoundingClientRect().right - 75 < window.scrollX + document.querySelector('.emptyDiv').getBoundingClientRect().right
-      ) {
+        && (bottomOfKey - 200) < bottomOfEmptyDiv
+        && (topOfKey + 225) > topOfEmptyDiv
+        ) {
         main.classList.toggle('active');
         main.style.opacity = 0;
 
@@ -274,7 +289,10 @@
       console.log(
         "clientX: " + event.clientX +
         " - clientY: " + event.clientY);
-      console.log(keyId.getBoundingClientRect().top, ' : ', document.querySelector('.emptyDiv').getBoundingClientRect().top, ' : ', (window.innerWidth / 2 + 100), ' : ', window.innerHeight / 2, ' : ', (window.innerWidth / 2))
+        topOfKey  = window.scrollY + document.querySelector('.key').getBoundingClientRect().top
+      topOfEmptyDiv = window.scrollY + document.querySelector('.emptyDiv').getBoundingClientRect().top
+
+      console.log((topOfKey + 150), topOfKey, ' : ', topOfEmptyDiv, (topOfEmptyDiv));
 
     }
 
